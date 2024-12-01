@@ -26,21 +26,12 @@ public class BoxAndWhiskerChart {
     private List<Double> getInputData(double[] data) {
         ArrayList<Double> list = new ArrayList<>();
         for (int j = 0; j < data.length; j++) {
-            list.add(l[j]);
+            list.add(data[j]);
         }
         return list;
     }
 
-    public void display() {
-        JFrame f = new JFrame("Clone_Check");
-
-        f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        DefaultBoxAndWhiskerCategoryDataset boxData = new DefaultBoxAndWhiskerCategoryDataset();
-
-        for (int i = 0; i < CosineSimilarity.similarArray.size(); i++) {
-            // System.out.println("p="+CosineSimilarity.similarArray.g);
-            boxData.add(getInputData(CosineSimilarity.similarArray.get(i)), "First_Project vs Second_Project", CloneCheck.ProjectFileName1.get(i));
-        }
+    JFreeChart createBoxAndWhiskerChart(DefaultBoxAndWhiskerCategoryDataset boxData){
         BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
         renderer.setFillBox(true);
         renderer.setUseOutlinePaintForWhiskers(true);
@@ -51,15 +42,30 @@ public class BoxAndWhiskerChart {
         CategoryAxis xAxis = new CategoryAxis("First_Project_Files");
         NumberAxis yAxis = new NumberAxis("Second_Project_Values");
         CategoryPlot plot = new CategoryPlot(boxData, xAxis, yAxis, renderer);
-        final JFreeChart chart = new JFreeChart(
+        return new JFreeChart(
                 "Box-and-Whisker Plot",
                 new Font("SansSerif", Font.BOLD, 20),
                 plot,
                 true
         );
+
+    }
+
+    public void display() {
+        JFrame f = new JFrame("Clone_Check");
+
+        f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        DefaultBoxAndWhiskerCategoryDataset boxData = new DefaultBoxAndWhiskerCategoryDataset();
+
+        for (int i = 0; i < CosineSimilarity.similarArray.size(); i++) {
+            boxData.add(getInputData(CosineSimilarity.similarArray.get(i)), "First_Project vs Second_Project", CloneCheck.ProjectFileName1.get(i));
+        }
+
+
+
+        JFreeChart chart = createBoxAndWhiskerChart(boxData)
         final ChartPanel chartPanel = new ChartPanel(chart);
         chart.setBackgroundPaint(Color.LIGHT_GRAY);
-        //   JFreeChart chart = new JFreeChart("Test", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
         f.add(new ChartPanel(chart) {
             @Override
             public Dimension getPreferredSize() {
