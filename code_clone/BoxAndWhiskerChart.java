@@ -23,14 +23,11 @@ public class BoxAndWhiskerChart {
 
     JScrollPane scrollPane;
 
-    private List<Double> getInputData(double l[]) {
+    private List<Double> getInputData(double[] data) {
         ArrayList<Double> list = new ArrayList<>();
-        for (int j = 0; j < l.length; j++) {
-            double d = l[j];
-            //    System.out.println("k=="+l[j]);
+        for (int j = 0; j < data.length; j++) {
             list.add(l[j]);
-
-        }//System.out.println("");
+        }
         return list;
     }
 
